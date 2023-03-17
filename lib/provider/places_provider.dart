@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:great_places/helpers/DB_helper.dart';
 import '/models/place.dart';
 
 class PlacesProvider with ChangeNotifier {
@@ -17,6 +18,12 @@ class PlacesProvider with ChangeNotifier {
       title: title,
     );
     _items.add(newPlace);
+
     notifyListeners();
+    DBHelper.insert('place', {
+      'id': newPlace.id,
+      'title': newPlace.title,
+      'image': newPlace.image.path,
+    });
   }
 }

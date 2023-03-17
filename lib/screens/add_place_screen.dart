@@ -23,6 +23,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     if (titleController.text.isNotEmpty || _selectedImage != null) {
       Provider.of<PlacesProvider>(context, listen: false)
           .addPlace(titleController.text, _selectedImage!);
+
       Navigator.pop(context);
     }
   }
