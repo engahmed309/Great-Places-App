@@ -19,29 +19,38 @@ class PlacesListScreen extends StatelessWidget {
               icon: Icon(Icons.add))
         ],
       ),
-      body: Consumer<PlacesProvider>(
-        child: Center(
-          child: Text(
-            "No places added yet , start adding !",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-        builder: (ctx, place, ch) => place.items.isEmpty
-            ? ch as Widget
-            : ListView.builder(
-                itemCount: place.items.length,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 6,
-                    child: ListTile(
-                      title: Text(place.items[index].title),
-                      leading: CircleAvatar(
-                        backgroundImage: FileImage(place.items[index].image),
-                      ),
-                    ),
+      body: FutureBuilder(
+        future: Provider.of<PlacesProvider>(context).fetchAndSetData(),
+        builder: (ctx, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Consumer<PlacesProvider>(
+                child: Center(
+                  child: Text(
+                    "No places added yet , start adding !",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
+                builder: (ctx, place, ch) => place.items.isEmpty
+                    ? ch as Widget
+                    : ListView.builder(
+                        itemCount: place.items.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            elevation: 6,
+                            child: ListTile(
+                              title: Text(place.items[index].title),
+                              leading: CircleAvatar(
+                                backgroundImage:
+                                    FileImage(place.items[index].image),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
               ),
       ),
     );
